@@ -2,7 +2,10 @@
   --bg:#1D1812; --panel:#2B2419;
   --cream:#F2EDE1; --cream-70:rgba(242,237,225,.72); --cream-45:rgba(242,237,225,.45);
   --dline:rgba(242,237,225,.16); --dline-soft:rgba(242,237,225,.09);
-  --sage:#A8A489; --sage-deep:#87845F; --amber:#C9995B;
+  /* MARKA YEŞİLİ — kartvizitten örneklendi (2026-07-30): #2B4D41.
+     Vurgu ve iletişim bölümü bu renge geçti; sıcak krem zemin korundu. */
+  --green:#2B4D41; --green-mid:#3D6455; --green-pale:#8AA79A;
+  --sage:#A8A489; --sage-deep:#3D6455; --amber:#C9995B;
   --paper:#F4F1EA; --paper-2:#ECE7DA; --white:#FDFCF9;
   --ink:#26231D; --ink-soft:#5C574B; --muted:#8A8474; --iline:rgba(38,35,29,.13);
   --serif:'Inter',-apple-system,'SF Pro Display',system-ui,sans-serif; --sans:'Inter',system-ui,sans-serif; --mono:'IBM Plex Mono',monospace;
@@ -62,8 +65,8 @@ h1,h2,h3{font-family:var(--serif);font-weight:700;line-height:1.05;letter-spacin
 .wrap{max-width:var(--wrap);margin:0 auto;padding:0 30px}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--sage-deep);display:flex;align-items:center;gap:12px}
 .eyebrow::before{content:"";width:30px;height:1px;background:var(--sage-deep)}
-.dark-sec .eyebrow{color:var(--sage)}
-.dark-sec .eyebrow::before{background:var(--sage)}
+.dark-sec .eyebrow{color:var(--green-pale)}
+.dark-sec .eyebrow::before{background:var(--green-pale)}
 .btn{display:inline-flex;align-items:center;gap:10px;padding:16px 30px;font-weight:500;font-size:15px;transition:.3s var(--ease);cursor:pointer;border:1px solid transparent;font-family:var(--sans);border-radius:2px}
 .btn-cream{background:var(--cream);color:var(--ink)}
 .btn-cream:hover{background:var(--sage);color:var(--ink)}
@@ -342,7 +345,7 @@ section{padding:100px 0}
 .founder .sign b{display:block;font-size:24px;color:var(--ink)}
 
 /* CTA */
-.cta{background:var(--sage-deep);color:var(--cream)}
+.cta{background:var(--green);color:var(--cream)}
 .cta .eyebrow{color:rgba(242,237,225,.75)}
 .cta .eyebrow::before{background:rgba(242,237,225,.75)}
 .cta h2{font-size:clamp(36px,5.2vw,66px);font-weight:600;line-height:.99;letter-spacing:-.025em}
