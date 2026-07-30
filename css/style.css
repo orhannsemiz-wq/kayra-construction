@@ -657,9 +657,12 @@ header:not(.solid) .nav-cta{background:var(--ink);color:var(--cream)}
 .heroA .hA-right{background:
   radial-gradient(88% 66% at 58% 22%, rgba(201,153,91,.22) 0%, transparent 64%),
   linear-gradient(165deg,#22392F 0%,#182823 54%,#12201C 100%)}
-.heroA .map-wrap{position:absolute;inset:0;overflow:hidden}
+/* .map-wrap adı iletişimdeki Google harita kutusuyla çakışıyordu; oradaki
+   margin/border/gölge kapak paneline sızıp 54px boşluk bırakıyordu. */
+.heroA .map-wrap{position:absolute;inset:0;overflow:hidden;
+  margin:0;border:none;border-radius:0;box-shadow:none}
 .heroA .map-vid{position:absolute;left:50%;top:47%;transform:translate(-50%,-50%);
-  width:118%;height:auto;min-height:100%;object-fit:cover;
+  width:100%;height:100%;object-fit:cover;
   opacity:0;animation:mvIn 1.4s .25s var(--ease) forwards}
 @keyframes mvIn{to{opacity:1}}
 /* kenarları zemine karıştır — kare video dikdörtgen panelde sırıtmasın */
