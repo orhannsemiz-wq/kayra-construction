@@ -402,7 +402,7 @@ footer .brand .bt b{color:var(--cream)}
    sıra sıra "biz gerçekten yaptık" diyen belgesel akış.
    ============================================================ */
 .rise{padding:0;background:var(--bg);color:var(--cream);position:relative}
-.rise-track{height:630vh;position:relative}
+.rise-track{height:700vh;position:relative}
 .rise-sticky{position:sticky;top:0;height:100svh;display:flex;align-items:center;overflow:hidden}
 .rise-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:center;width:100%}
 .rise-txt h2{font-size:clamp(36px,5vw,66px);margin:20px 0 10px;font-weight:600;line-height:.99;letter-spacing:-.025em}
@@ -492,7 +492,7 @@ footer .brand .bt b{color:var(--cream)}
 .founder .av{border-radius:var(--arch-deep)}
 
 @media(max-width:960px){
-  .rise-track{height:470vh}
+  .rise-track{height:520vh}
   .rise-grid{grid-template-columns:1fr;gap:22px}
   .rise-stage{max-height:52svh;margin-left:0}
   .rise-meter{left:-14px}

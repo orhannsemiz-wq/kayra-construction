@@ -1,5 +1,10 @@
 // RUSÇA SÖZLÜK — anahtar: data-tr metni (birebir)
 const RU={
+"Tamamlandığında":"После завершения",
+"10 · Tamamlandığında · proje görseli":"10 · После завершения · визуализация",
+"Aynı yapının on karesi — kolonlardan proje görseline.":"Десять кадров одного здания — от колонн до визуализации.",
+"01-09 kendi şantiyemizde çekilmiş fotoğraflardır; 10 aynı yapının mimari proje görselidir.":"Кадры 01-09 сняты на нашем объекте; 10 — архитектурная визуализация того же здания.",
+
 "Kolonlar dikiliyor":"Поднимаются колонны",
 "01 · Kolonlar dikiliyor":"01 · Поднимаются колонны",
 "Kemerler dökülüyor":"Отливаются арки",
