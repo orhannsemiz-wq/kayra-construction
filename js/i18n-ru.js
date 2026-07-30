@@ -128,7 +128,7 @@ const RU={
 "Önce — eski kemer":"До — старая арка","Bugün — yeniden ayağa":"Сегодня — поднята заново",
 "01 · Eski köy evi":"01 · Старый деревенский дом","02 · Yıkım günü":"02 · День сноса","03 · Şantiyede gün batımı":"03 · Закат на стройке","04 · Taş ustası iş başında":"04 · Каменщик за работой","05 · Kemerler yükseliyor":"05 · Арки поднимаются","06 · Duvarlar örülüyor":"06 · Кладка стен","07 · Ahşap tavan korundu":"07 · Деревянный потолок сохранён","08 · Taş cephe":"08 · Каменный фасад",
 "Tüm kareler gerçek şantiyemizden — Kemerli Taş Ev projesi, Büyükkonuk.":"Все кадры — с нашей реальной стройки: проект «Каменный дом с арками», Бююкконук.",
-"Kart görselleri, kendi şantiyelerimizde çektiğimiz fotoğraflar üzerinden hazırlanan proje görselleridir — yapıların tamamlanmış hâlini gösterir. 7-8 projelik portföyün tamamı yakında burada.":"Изображения на карточках — это визуализации, подготовленные по фотографиям с наших собственных объектов; они показывают здания в завершённом виде. Полное портфолио из 7–8 проектов скоро здесь.",
+"İlk iki kare teslim ettiğimiz evden çekilmiş gerçek fotoğraflardır. Üçüncüsü, yapımı süren evin proje görselidir. Portföyün tamamı yakında burada.":"Первые два кадра — настоящие фотографии сданного нами дома. Третий — визуализация строящегося дома. Полное портфолио скоро здесь.",
 "Proje görseli":"Визуализация проекта",
 "Dün — eski köy evi":"Вчера — старый деревенский дом","Yarın — restore edilmiş hâli":"Завтра — после реставрации",
 "Sık sorulanlar":"Частые вопросы","Merak edilenler.":"Частые вопросы.",
