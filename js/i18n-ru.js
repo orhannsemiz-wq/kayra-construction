@@ -69,7 +69,7 @@ const RU={
 "İnşaat &amp; Emlak — Mehmetçik / İskele / KKTC":"Строительство и недвижимость — Мехметчик / Искеле / Северный Кипр",
 "Arsadan":"От участка","Söz de beton da — ikisi de tutar. Kuzey Kıbrıs'ta yüz yıllık Kıbrıs taşını modern evle buluşturuyoruz: arsayı bulan, projeyi yürüten ve anahtarı elinize bırakan aynı imza.":"Мы строим и продаём на Северном Кипре: жилые проекты, виллы под ключ и готовые к заселению дома. Тот, кто находит участок, ведёт проект и вручает вам ключи, — одна и та же подпись.",
 "İnşaat &amp; Projeler":"Строительство и проекты","İnşaat & Projeler":"Строительство и проекты","Satılık Evler":"Дома на продажу",
-"Teslim edilen konut":"Сданных домов","Yılımız":"Год работы","Yapımdaki en büyük villa":"Крупнейшая строящаяся вилла","Kendi şantiyemizden":"Снято на нашем объекте",
+"Teslim edilen konut":"Сданных домов","Yılımız":"Год работы","Yapımdaki en büyük villa":"Крупнейшая строящаяся вилла","Teslim ettiğimiz ev · proje görseli":"Сданный нами дом · визуализация",
 "İki iş kolu":"Два направления","Yaparız ve satarız.":"Строим и продаём.",
 "Kayra'nın iki kapısı var — ne aradığınıza göre doğrusundan girin.":"У Kayra две двери — входите через ту, что подходит именно вам.",
 "Müteahhitlik":"Подряд","Konut projeleri, anahtar teslim villalar, ticari yapılar ve tadilat — kendi ekibimizle.":"Жилые проекты, виллы под ключ, коммерческие здания и ремонт — собственной командой.",
