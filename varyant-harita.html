@@ -50,7 +50,12 @@
 .heroA .map-legend::before{display:none}
 .heroA .map-legend .ml-t{color:var(--muted)}
 .heroA .map-legend .ml-n{color:var(--ink);text-shadow:none}
-@media(max-width:900px){.heroA .map-vid{transform:none}}
+/* Mobilde panel kare değil (390×439): ada hem küçük kalıyor hem de alt yazının
+   üstüne biniyordu. Büyütüp yukarı alıyoruz, yazıya ~25px pay kalıyor. */
+@media(max-width:900px){
+  .heroA .map-vid{transform:scale(1.12) translateY(-8%)}
+  .heroA .map-legend{background:none}
+}
 </style>
 </head>
 <body class="pre">
