@@ -64,6 +64,23 @@
       }
     }
 
+    /* ---------- EMLAK İLANLARI ---------- */
+    if (Array.isArray(d.ilanlar)) {
+      var ik = q(".ilanlar");
+      if (ik) {
+        var yayinda = d.ilanlar.filter(function (x) { return x && x.yayinda !== false; });
+        if (yayinda.length) {
+          ik.innerHTML = yayinda.map(ilanHtml).join("");
+          buyutmeyiBagla(ik);
+          ik.style.display = "";
+        } else {
+          /* Hepsi satıldıysa boş bir çerçeve bırakmak yerine bölümü gizle;
+             altındaki portföy bulucu zaten devrede kalıyor. */
+          ik.style.display = "none";
+        }
+      }
+    }
+
     /* ---------- İLETİŞİM ---------- */
     if (d.iletisim) {
       var c = d.iletisim;
@@ -120,11 +137,52 @@
       "</div></div>";
   }
 
+  function ilanHtml(x) {
+    var fotolar = (x.fotolar || []).filter(Boolean);
+    var buyuk = fotolar[0] || "";
+    var kucuk = fotolar.slice(1, 3);
+    var rozet = kacis(x.rozet || "Satılık");
+    var rozetEn = kacis(x.rozet_en || (x.rozet ? x.rozet : "For sale"));
+
+    var kunye = [];
+    if (x.alan) kunye.push('<div><span data-tr="Alan" data-en="Area">Alan</span><b>' + kacis(x.alan) + "</b></div>");
+    if (x.kocan) kunye.push('<div><span data-tr="Koçan" data-en="Title deed">Koçan</span><b data-tr="' +
+      kacis(x.kocan) + '" data-en="' + kacis(x.kocan_en || x.kocan) + '">' + kacis(x.kocan) + "</b></div>");
+    if (x.fiyat) kunye.push('<div><span data-tr="Fiyat" data-en="Price">Fiyat</span><b>' + kacis(x.fiyat) + "</b></div>");
+
+    var wa = "https://wa.me/" + (x.whatsapp || "905338298030") + "?text=" +
+      encodeURIComponent("Merhaba, " + (x.baslik || "ilan") +
+        (x.konum ? " (" + x.konum + ")" : "") + " hakkında bilgi almak istiyorum.");
+
+    return '<article class="ilan">' +
+      '<div class="ilan-gorseller">' +
+        '<div class="ph"><img src="' + kacis(buyuk) + '" alt="' + kacis(x.baslik || "") + '" loading="lazy">' +
+        '<span class="st" data-tr="' + rozet + '" data-en="' + rozetEn + '">' + rozet + "</span></div>" +
+        (kucuk.length ? '<div class="ilan-kucuk">' + kucuk.map(function (f) {
+          return '<img src="' + kacis(f) + '" alt="' + kacis(x.baslik || "") + '" loading="lazy">';
+        }).join("") + "</div>" : "") +
+      "</div>" +
+      '<div class="ilan-govde">' +
+        (x.tur ? '<div class="ptag" data-tr="' + kacis(x.tur) + '" data-en="' +
+          kacis(x.tur_en || x.tur) + '">' + kacis(x.tur) + "</div>" : "") +
+        '<h3 data-tr="' + kacis(x.baslik || "") + '" data-en="' + kacis(x.baslik_en || x.baslik || "") + '">' +
+          kacis(x.baslik || "") + "</h3>" +
+        (x.konum ? '<div class="loc">' + kacis(x.konum) + "</div>" : "") +
+        (x.aciklama ? '<p data-tr="' + kacis(x.aciklama) + '" data-en="' +
+          kacis(x.aciklama_en || x.aciklama) + '">' + kacis(x.aciklama) + "</p>" : "") +
+        (kunye.length ? '<div class="facts">' + kunye.join("") + "</div>" : "") +
+        (x.not ? '<p class="ilan-not" data-tr="' + kacis(x.not) + '" data-en="' +
+          kacis(x.not_en || x.not) + '">' + kacis(x.not) + "</p>" : "") +
+        '<a href="' + wa + '" target="_blank" rel="noopener" class="btn btn-ink" ' +
+          'data-tr="Bu ilanı sorun &#8594;" data-en="Ask about this listing &#8594;">Bu ilanı sorun &#8594;</a>' +
+      "</div></article>";
+  }
+
   /* Kartlar yeniden çizilince main.js'in kurduğu büyüteç bağı kopuyor;
      yeni görsellere aynı davranışı geri takıyoruz. */
   function buyutmeyiBagla(kap) {
     if (typeof window.openLB !== "function") return;
-    kap.querySelectorAll(".ph img").forEach(function (el) {
+    kap.querySelectorAll(".ph img,.ilan-kucuk img").forEach(function (el) {
       el.classList.add("zoomable");
       el.addEventListener("click", function (e) {
         e.preventDefault(); e.stopPropagation();

@@ -79,7 +79,13 @@ Giriş yap, bir yazıyı değiştir, **Yayınla** de, sonra siteyi aç ve kontro
 ## Bilinmesi gerekenler
 
 **Panel neyi değiştirir:** ana sayfa sloganı ve giriş yazısı, üç rakam,
-tüm proje kartları (ekleme/silme dahil), iletişim bilgileri.
+tüm proje kartları (ekleme/silme dahil), **emlak ilanları** (ekleme, silme,
+gizleme, üç fotoğrafa kadar), iletişim bilgileri.
+
+**Satılan ilan:** silmek yerine "Bu ilan sitede görünsün" işaretini kaldırmak
+yeterli — siteden kalkar ama bilgiler panelde durur, gerekirse geri açılır.
+Tüm ilanlar gizlenirse emlak bölümündeki ilan alanı tamamen kaybolur,
+altındaki portföy bulucu çalışmaya devam eder.
 
 **Neyi değiştirmez:** bölüm başlıkları, süreç adımları, yükseliş sekansı,
 kapak videosu, tasarım. Bunlar koda gömülü — değişmesi gerekirse sen yaparsın.

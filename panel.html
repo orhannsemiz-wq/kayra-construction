@@ -126,6 +126,19 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
  cursor:pointer;min-height:46px}
 .bos{color:var(--muted);font-size:14px;padding:6px 0}
 
+/* ---- ilan fotoğrafları ---- */
+.foto-serit{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
+.foto-kutu{position:relative;aspect-ratio:4/3;border:1px solid var(--line);border-radius:10px;
+ overflow:hidden;background:#EFECE3;display:flex;align-items:center;justify-content:center;
+ cursor:pointer;font-size:12.5px;color:var(--muted);text-align:center;padding:6px}
+.foto-kutu img{width:100%;height:100%;object-fit:cover}
+.foto-kutu .rozet{position:absolute;left:6px;top:6px;background:rgba(21,34,32,.76);
+ color:#F4F1EA;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+ padding:4px 7px;border-radius:4px}
+.yayin-anahtar{display:flex;align-items:center;gap:10px;background:#EEF2EF;
+ border:1px solid #CFDBD4;border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:14px}
+.yayin-anahtar input{width:auto;min-height:0;transform:scale(1.25);margin-right:4px}
+
 /* proje sırası */
 .sira{display:flex;gap:6px;margin-right:4px}
 .sira button{background:none;border:1px solid var(--line);border-radius:8px;
@@ -190,6 +203,7 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
 <nav class="sek">
   <button data-sayfa="anasayfa" class="on">Ana Sayfa</button>
   <button data-sayfa="projeler">Projeler</button>
+  <button data-sayfa="emlak">Emlak</button>
   <button data-sayfa="iletisim">İletişim</button>
   <button data-sayfa="hesap">Hesap</button>
 </nav>
@@ -230,6 +244,15 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
   <p class="yardim">Sitedeki proje kartları. Sıra burada nasılsa sitede de öyle görünür.</p>
   <div id="projeListe"></div>
   <button class="ekle" id="btnYeniProje">+ Yeni proje ekle</button>
+</section>
+
+<!-- ---- EMLAK ---- -->
+<section class="sayfa" id="s-emlak">
+  <h2>Satılık ilanlar</h2>
+  <p class="yardim">Arsa, ev, daire — sitede "Emlak" bölümünde görünürler.
+  Satılan bir ilanı silmeden gizleyebilirsiniz.</p>
+  <div id="ilanListe"></div>
+  <button class="ekle" id="btnYeniIlan">+ Yeni ilan ekle</button>
 </section>
 
 <!-- ---- HESAP ---- -->
@@ -307,6 +330,6 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
 
 <input type="file" id="fotoSecici" accept="image/*" class="gizli">
 
-<script src="js/panel-ayar.js?v=3"></script>
-<script src="js/panel.js?v=3"></script>
+<script src="js/panel-ayar.js?v=4"></script>
+<script src="js/panel.js?v=4"></script>
 </body></html>

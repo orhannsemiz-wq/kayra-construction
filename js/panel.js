@@ -15,7 +15,7 @@
   /* Kurulum yapılmadıysa panel açılmaz. */
   if (!A.url || !A.anahtar) { $("#ekranKurulum").classList.remove("gizli"); return; }
 
-  var OTURUM = null, ICERIK = null, KIRLI = false, YUKLENEN_PROJE = null;
+  var OTURUM = null, ICERIK = null, KIRLI = false, YUKLENEN_PROJE = null, YUKLENEN_ILAN = null;
   var GECMIS = [];          // son 5 yayının kaydı
   var SON_YAYIN = null;     // sunucuda o an duran hâl (geçmişe bu yazılır)
   var TASLAK = "kayraTaslak";
@@ -50,6 +50,18 @@
         oda: "6", alan: "300 m²", durum: "Yapımda", durum_en: "In build",
         rozet: "Yapımda", rozet_en: "In build",
         foto: "assets/foto/proje-tasev.jpg", temsili: true }
+    ],
+    ilanlar: [
+      { id: "i1", yayinda: true, tur: "Arazi", tur_en: "Land",
+        baslik: "2.242 m² arazi", baslik_en: "2,242 m² plot",
+        konum: "Mehmetçik, İskele",
+        aciklama: "Köyün hemen dışında, tarlaların arasında düz bir parsel. Yola cephesi var, uzaktan deniz görünüyor. Sınırları fotoğraflarda işaretli.",
+        alan: "2.242 m²", kocan: "Türk koçanlı", kocan_en: "Turkish title",
+        fiyat: "£15.000", rozet: "Satılık", rozet_en: "For sale",
+        not: "Fiyat arsanın tamamı içindir, metrekare fiyatı değildir.",
+        fotolar: ["assets/foto/arsa-mehmetcik-1.jpg",
+                  "assets/foto/arsa-mehmetcik-2.jpg",
+                  "assets/foto/arsa-mehmetcik-3.jpg"] }
     ],
     iletisim: {
       telefon: "0533 829 80 30", telefonHam: "+905338298030", whatsapp: "905338298030",
@@ -166,6 +178,11 @@
       if (!Array.isArray(ICERIK.projeler) || !ICERIK.projeler.length) {
         ICERIK.projeler = JSON.parse(JSON.stringify(VARSAYILAN.projeler));
       }
+      /* İlanlar silinebilir olmalı — boş dizi geçerli bir durumdur, o yüzden
+         projelerden farklı olarak "boşsa varsayılanı geri getir" YAPMIYORUZ. */
+      if (!Array.isArray(ICERIK.ilanlar)) {
+        ICERIK.ilanlar = JSON.parse(JSON.stringify(VARSAYILAN.ilanlar));
+      }
       SON_YAYIN = JSON.stringify(ICERIK);
       doldur();
       taslakSor();
@@ -234,6 +251,7 @@
     });
     istatistikCiz();
     projeleriCiz();
+    ilanlariCiz();
     gecmisCiz();
     $("#btnYayinla").disabled = true;
     durum("Hazır. Değişiklik yapıp <b>Yayınla</b> deyin.");
@@ -359,10 +377,115 @@
     son.scrollIntoView({ behavior: "smooth", block: "center" });
   });
 
+  /* ---------------- emlak ilanları ---------------- */
+  function ilanlariCiz() {
+    var k = $("#ilanListe"); if (!k) return;
+    if (!ICERIK.ilanlar.length) {
+      k.innerHTML = '<div class="bos">Henüz ilan yok. Aşağıdan ekleyebilirsiniz.</div>';
+      return;
+    }
+    k.innerHTML = ICERIK.ilanlar.map(function (x, i) {
+      var f = x.fotolar || [];
+      return '<div class="proje' + (x.yayinda === false ? "" : "") + '" data-i="' + i + '">' +
+        '<div class="proje-ust">' +
+          '<img src="' + kacis(f[0] || "") + '" alt="">' +
+          '<div><div class="ad">' + kacis(x.baslik || "Adsız ilan") + "</div>" +
+          '<div class="yer">' + kacis(x.konum || "") +
+            (x.yayinda === false ? " · <b>gizli</b>" : "") + "</div></div>" +
+          '<div class="sira">' +
+            '<button type="button" class="yukari"' + (i === 0 ? " disabled" : "") + ">↑</button>" +
+            '<button type="button" class="asagi"' + (i === ICERIK.ilanlar.length - 1 ? " disabled" : "") + ">↓</button>" +
+          "</div>" +
+          '<button class="ac-kapa" type="button">Düzenle</button>' +
+        "</div>" +
+        '<div class="proje-govde">' +
+          '<label class="yayin-anahtar"><input type="checkbox" data-x="yayinda" ' +
+            (x.yayinda === false ? "" : "checked") + "> Bu ilan sitede görünsün</label>" +
+          ialan("İlan başlığı", "baslik", x.baslik) +
+          '<div class="ikili">' + ialan("Tür (Arazi, Villa, Daire…)", "tur", x.tur) +
+            ialan("Konum", "konum", x.konum) + "</div>" +
+          '<div class="alan"><label>Açıklama</label><textarea data-x="aciklama">' +
+            kacis(x.aciklama || "") + "</textarea></div>" +
+          '<div class="ikili">' + ialan("Alan", "alan", x.alan) +
+            ialan("Koçan", "kocan", x.kocan) + "</div>" +
+          '<div class="ikili">' + ialan("Fiyat", "fiyat", x.fiyat) +
+            ialan("Fotoğraf üstündeki etiket", "rozet", x.rozet) + "</div>" +
+          '<div class="alan"><label>Küçük not (isteğe bağlı)</label>' +
+            '<div class="ipucu">Fiyatın altında küçük yazıyla çıkar.</div>' +
+            '<input type="text" data-x="not" value="' + kacis(x.not || "") + '"></div>' +
+          '<div class="alan"><label>Fotoğraflar</label>' +
+            '<div class="ipucu">İlki büyük görünür, diğer ikisi altında küçük çıkar.</div>' +
+            '<div class="foto-serit">' + [0, 1, 2].map(function (n) {
+              return '<div class="foto-kutu" data-slot="' + n + '">' +
+                (f[n] ? '<img src="' + kacis(f[n]) + '" alt="">' : "Fotoğraf ekle") +
+                '<span class="rozet">' + (n === 0 ? "Büyük" : n + 1) + "</span></div>";
+            }).join("") + "</div></div>" +
+          '<button class="sil" type="button">Bu ilanı sil</button>' +
+        "</div></div>";
+    }).join("");
+    ilanOlaylari(k);
+  }
+
+  function ialan(etiket, anahtar, deger) {
+    return '<div class="alan"><label>' + etiket + '</label>' +
+      '<input type="text" data-x="' + anahtar + '" value="' + kacis(deger || "") + '"></div>';
+  }
+
+  function ilanOlaylari(k) {
+    k.querySelectorAll(".proje").forEach(function (d) {
+      var i = +d.dataset.i;
+      d.querySelector(".ac-kapa").addEventListener("click", function () {
+        d.classList.toggle("acik");
+        this.textContent = d.classList.contains("acik") ? "Kapat" : "Düzenle";
+      });
+      d.querySelectorAll("[data-x]").forEach(function (el) {
+        el.addEventListener(el.type === "checkbox" ? "change" : "input", function () {
+          ICERIK.ilanlar[i][el.dataset.x] = el.type === "checkbox" ? el.checked : el.value;
+          if (el.dataset.x === "baslik") d.querySelector(".ad").textContent = el.value || "Adsız ilan";
+          if (el.dataset.x === "yayinda") ilanlariCiz();
+          kirlet();
+        });
+      });
+      d.querySelectorAll(".foto-kutu").forEach(function (kutu) {
+        kutu.addEventListener("click", function () {
+          YUKLENEN_PROJE = null; YUKLENEN_ILAN = { i: i, slot: +kutu.dataset.slot };
+          $("#fotoSecici").click();
+        });
+      });
+      d.querySelector(".yukari").addEventListener("click", function () { ilanTasi(i, -1); });
+      d.querySelector(".asagi").addEventListener("click", function () { ilanTasi(i, 1); });
+      d.querySelector(".sil").addEventListener("click", function () {
+        if (!confirm("“" + (ICERIK.ilanlar[i].baslik || "Bu ilan") + "” tamamen silinsin mi?\n\n" +
+          "Satıldıysa silmek yerine “sitede görünsün” işaretini kaldırabilirsiniz — " +
+          "böylece bilgiler kaybolmaz.")) return;
+        ICERIK.ilanlar.splice(i, 1); ilanlariCiz(); kirlet();
+      });
+    });
+  }
+
+  function ilanTasi(i, yon) {
+    var j = i + yon, p = ICERIK.ilanlar;
+    if (j < 0 || j >= p.length) return;
+    var t = p[i]; p[i] = p[j]; p[j] = t;
+    ilanlariCiz(); kirlet();
+  }
+
+  $("#btnYeniIlan").addEventListener("click", function () {
+    ICERIK.ilanlar.push({
+      id: "i" + Date.now(), yayinda: true, tur: "Arazi", baslik: "Yeni ilan",
+      konum: "", aciklama: "", alan: "", kocan: "Türk koçanlı", fiyat: "",
+      rozet: "Satılık", not: "", fotolar: []
+    });
+    ilanlariCiz(); kirlet();
+    var son = $("#ilanListe").lastElementChild;
+    son.classList.add("acik"); son.querySelector(".ac-kapa").textContent = "Kapat";
+    son.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
   /* ---------------- fotoğraf yükleme ---------------- */
   $("#fotoSecici").addEventListener("change", function () {
     var dosya = this.files && this.files[0]; this.value = "";
-    if (!dosya || YUKLENEN_PROJE == null) return;
+    if (!dosya || (YUKLENEN_PROJE == null && YUKLENEN_ILAN == null)) return;
     durum("Fotoğraf hazırlanıyor…");
     kucult(dosya, function (blob) {
       if (!blob) return durum("Bu dosya okunamadı. Başka bir fotoğraf deneyin.", "#A8443A");
@@ -375,9 +498,27 @@
       }).then(function (r) {
         if (!r.ok) throw 0;
         var url = A.url + "/storage/v1/object/public/medya/" + ad;
-        ICERIK.projeler[YUKLENEN_PROJE].foto = url;
-        var kart = $('#projeListe .proje[data-i="' + YUKLENEN_PROJE + '"]');
-        if (kart) kart.querySelector("img").src = url;
+        if (YUKLENEN_ILAN) {
+          var x = ICERIK.ilanlar[YUKLENEN_ILAN.i];
+          x.fotolar = x.fotolar || [];
+          /* Boş slotlar arada delik bırakmasın: 3. kutuya basıp 2. boşsa
+             fotoğraf 2. sıraya yerleşir. */
+          while (x.fotolar.length < YUKLENEN_ILAN.slot) x.fotolar.push("");
+          x.fotolar[YUKLENEN_ILAN.slot] = url;
+          x.fotolar = x.fotolar.filter(Boolean);
+          var acik = $('#ilanListe .proje[data-i="' + YUKLENEN_ILAN.i + '"]');
+          var acikMi = acik && acik.classList.contains("acik");
+          ilanlariCiz();
+          if (acikMi) {
+            var yeni = $('#ilanListe .proje[data-i="' + YUKLENEN_ILAN.i + '"]');
+            yeni.classList.add("acik"); yeni.querySelector(".ac-kapa").textContent = "Kapat";
+          }
+          YUKLENEN_ILAN = null;
+        } else {
+          ICERIK.projeler[YUKLENEN_PROJE].foto = url;
+          var kart = $('#projeListe .proje[data-i="' + YUKLENEN_PROJE + '"]');
+          if (kart) kart.querySelector("img").src = url;
+        }
         kirlet(); durum("Fotoğraf yüklendi. <b>Yayınla</b> demeyi unutmayın.", "#A8443A");
       }).catch(function () {
         durum("Fotoğraf yüklenemedi. İnternetinizi kontrol edip tekrar deneyin.", "#A8443A");
