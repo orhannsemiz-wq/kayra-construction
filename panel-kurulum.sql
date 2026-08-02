@@ -19,6 +19,13 @@ alter table site_icerik add column if not exists gecmis jsonb not null default '
 insert into site_icerik (id, veri) values (1, '{}'::jsonb)
   on conflict (id) do nothing;
 
+-- 1b) Tabloyu Data API'ye aç. Proje kurulurken "Automatically expose new
+--     tables" kapatılmış olsa bile panel çalışsın diye açıkça veriyoruz.
+--     Bu yetkiler tek başına erişim vermez; asıl kapı aşağıdaki RLS.
+grant usage on schema public to anon, authenticated;
+grant select on site_icerik to anon, authenticated;
+grant update on site_icerik to authenticated;
+
 -- 2) Satır düzeyi güvenlik: siteyi herkes okur, yalnız giriş yapan yazar.
 --    Paneldeki "anon" anahtar açıkta durabilir; yazma yetkisini o anahtar
 --    değil, aşağıdaki kurallar verir.
