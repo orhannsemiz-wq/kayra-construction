@@ -13,4 +13,4 @@ Disallow: /varyant-harita.html
 Disallow: /alternatifler.html
 Disallow: /alternatifler/
 
-Sitemap: https://orhannsemiz-wq.github.io/kayra-construction/sitemap.xml
+Sitemap: https://kayraconstruction.net/sitemap.xml

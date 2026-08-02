@@ -6,17 +6,17 @@
 <title>Kayra Investment & Construction — İnşaat & Emlak | Mehmetçik, İskele</title>
 <meta name="description" content="Kuzey Kıbrıs Mehmetçik/İskele merkezli inşaat ve emlak firması. Kemerli taş mimariyi modern villalarla buluşturan konut projeleri, anahtar teslim yapı ve satılık evler.">
 <meta name="theme-color" content="#1D1812">
-<link rel="canonical" href="https://orhannsemiz-wq.github.io/kayra-construction/">
+<link rel="canonical" href="https://kayraconstruction.net/">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Kayra Investment & Construction — İnşaat & Emlak | KKTC">
 <meta property="og:description" content="Kıbrıs'ın kemerli taşını modern evle buluşturuyoruz. Konut projeleri, anahtar teslim villa ve satılık evler — Mehmetçik / İskele.">
-<meta property="og:url" content="https://orhannsemiz-wq.github.io/kayra-construction/">
-<meta property="og:image" content="https://orhannsemiz-wq.github.io/kayra-construction/assets/og.jpg">
+<meta property="og:url" content="https://kayraconstruction.net/">
+<meta property="og:image" content="https://kayraconstruction.net/assets/og.jpg">
 <meta property="og:locale" content="tr_TR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://orhannsemiz-wq.github.io/kayra-construction/assets/og.jpg">
+<meta name="twitter:image" content="https://kayraconstruction.net/assets/og.jpg">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"GeneralContractor",
 "name":"Kayra Investment & Construction",
@@ -32,6 +32,35 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css?v=68">
 
+<style>
+/* HARİTA VARYANTI — sağ panel kutu olmaktan çıkar, sayfanın kremiyle birleşir.
+   Video zemini #F4F1EA'ya eşitlendiği için panel sınırı gözle seçilmez. */
+.heroA .hA-right{background:#F4F1EA}
+.heroA .map-wrap{background:#F4F1EA}
+/* style.css'te .map-vid fotoğrafı kırpmak için inset ile kaydırılmış;
+   harita kadraja sığmalı, o yüzden sıfırlanıyor. */
+.heroA .map-vid{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:contain;object-position:50% 50%;background:#F4F1EA;
+  transform:scale(1.15) translateY(-2.7%);transform-origin:50% 50%}
+/* Sol kenardaki koyu geçiş katmanı fotoğraf içindi; krem zeminde leke olurdu.
+   Yerine sitenin tam kremiyle yumuşak bir geçiş: panel sınırındaki çizgiyi
+   siler, ada 55px içeriden başladığı için adaya değmez. */
+.heroA .map-wrap::after{display:block;content:"";position:absolute;inset:0;
+  z-index:2;pointer-events:none;
+  background:linear-gradient(to right,#F4F1EA 0,rgba(244,241,234,0) 9%)}
+.heroA .grain{opacity:.10;mix-blend-mode:multiply}
+/* alt yazı krem üstünde: mürekkep rengine döner, koyu şerit kalkar */
+.heroA .map-legend{background:none;color:var(--ink)}
+.heroA .map-legend::before{display:none}
+.heroA .map-legend .ml-t{color:var(--muted)}
+.heroA .map-legend .ml-n{color:var(--ink);text-shadow:none}
+/* Mobilde panel kare değil (390×439): ada hem küçük kalıyor hem de alt yazının
+   üstüne biniyordu. Büyütüp yukarı alıyoruz, yazıya ~25px pay kalıyor. */
+@media(max-width:900px){
+  .heroA .map-vid{transform:scale(1.12) translateY(-8%)}
+  .heroA .map-legend{background:none}
+}
+</style>
 </head>
 <body class="pre">
 
@@ -111,12 +140,12 @@
            alt yazı da bu yüzden "kendi şantiyemizden" diyebiliyor.
            İleri-geri birleştirildi, döngü dikişsiz. 327 KB. -->
       <video class="map-vid" autoplay muted loop playsinline
-             poster="assets/video/kapak-villa-poster.jpg">
-        <source src="assets/video/kapak-villa.mp4" type="video/mp4">
+             poster="assets/video/harita-krem-poster.jpg">
+        <source src="assets/video/harita-krem.mp4" type="video/mp4">
       </video>
       <div class="map-legend">
-        <span class="ml-t" data-tr="Teslim ettiğimiz ev · proje görseli" data-en="A home we delivered · visualisation">Teslim ettiğimiz ev · proje görseli</span>
-        <span class="ml-n" data-tr="Modern Villa — Mehmetçik" data-en="Modern Villa — Mehmetçik">Modern Villa — Mehmetçik</span>
+        <span class="ml-t" data-tr="Çalışma alanımız" data-en="Where we build">Çalışma alanımız</span>
+        <span class="ml-n" data-tr="Mehmetçik · İskele · Büyükkonuk" data-en="Mehmetçik · İskele · Büyükkonuk">Mehmetçik · İskele · Büyükkonuk</span>
       </div>
     </div>
     <div class="grain"></div>
