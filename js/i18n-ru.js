@@ -41,8 +41,8 @@ const RU={
 
 "\"Teslim tarihi bizde pazarlama değil, sözleşme maddesidir.\"":"«Срок сдачи для нас — не маркетинг, а пункт договора.»",
 
-"Bugün":"Сегодня",
-"Yarın":"Завтра",
+"Bugün":"Сегодня","Öncesi":"До",
+"Yarın":"Завтра","Sonrası":"После",
 "İnşaat halinde — Modern Villa, Mehmetçik":"В процессе строительства — Modern Villa, Мехметчик",
 "Tamamlandığında — proje görseli":"После завершения — визуализация",
 

@@ -841,3 +841,33 @@ header:not(.solid) .nav-cta{background:var(--ink);color:var(--cream)}
   .bstep{padding:20px 0;background:none;border:none;border-top:1px solid var(--iline);border-radius:0}
   .buyer-steps{grid-template-columns:1fr;gap:0;margin-top:26px}
 }
+
+/* ============================================================
+   MOBİL TOPARLAMA (2026-08-02)
+   1) Sol taban çizgisi: hero 26px'te, diptik alt yazıları 32px'teydi;
+      sayfanın geri kalanı 30px. Üçü de 30'a çekildi.
+   2) 9–10px etiketler telefonda okunmuyordu; en küçük kademe 10,5–11px'e
+      yükseltildi. Masaüstü tipografisi değişmiyor, kural yalnız ≤900px'te.
+   ============================================================ */
+@media (max-width:900px){
+  .heroA .hA-left{padding-left:30px;padding-right:30px}
+  .diptych figcaption{padding-left:0}
+
+  /* !important bilinçli: yukarıdaki .heroA .hstat span gibi daha spesifik
+     kurallar bu bloğu eziyordu. Kapsam yalnız ≤900px. */
+  .hstat span{font-size:10.5px !important;line-height:1.35}
+  .stat span{font-size:11px !important}
+  .diptych figcaption span{font-size:11px !important}
+  .rise-cap{font-size:10.5px !important}
+  .svc-row .n{font-size:11px !important}
+  .ph .st{font-size:10.5px !important}
+  li>span.ss{font-size:10.5px !important}
+  .pvn{font-size:10.5px !important}
+  .map-legend .ml-t{font-size:10.5px !important}
+  .av .cap{font-size:10.5px !important}
+  .promise-row li span{font-size:11px !important}
+  .facts div span{font-size:10.5px !important}
+
+  /* logo bağlantısı 36px'ti; parmak hedefi 44px olmalı */
+  .brand{min-height:44px}
+}
