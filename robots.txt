@@ -1,0 +1,16 @@
+# Kayra Investment & Construction
+User-agent: *
+Allow: /$
+Allow: /assets/
+Allow: /css/
+Allow: /js/
+
+# Yönetim paneli ve müşteriye sunulan önizleme sayfaları indekslenmez.
+Disallow: /panel.html
+Disallow: /secenek-2.html
+Disallow: /harita-v2.html
+Disallow: /varyant-harita.html
+Disallow: /alternatifler.html
+Disallow: /alternatifler/
+
+Sitemap: https://orhannsemiz-wq.github.io/kayra-construction/sitemap.xml
