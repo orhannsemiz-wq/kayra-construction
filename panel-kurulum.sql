@@ -9,8 +9,12 @@
 create table if not exists site_icerik (
   id          int primary key,
   veri        jsonb not null default '{}'::jsonb,
+  gecmis      jsonb not null default '[]'::jsonb,  -- son 5 yayın (geri alma)
   guncelleme  timestamptz default now()
 );
+
+-- Tablo daha önce kurulduysa geçmiş sütununu ekle.
+alter table site_icerik add column if not exists gecmis jsonb not null default '[]'::jsonb;
 
 insert into site_icerik (id, veri) values (1, '{}'::jsonb)
   on conflict (id) do nothing;

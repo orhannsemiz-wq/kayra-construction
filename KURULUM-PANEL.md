@@ -94,9 +94,15 @@ Hasan Bey bir metni değiştirdiğinde İngilizcesini de yazmazsa, o metnin
 kenar 1600 piksele küçültülür ve JPEG %82'ye sıkıştırılır — Hasan Bey'in
 10 MB'lık fotoğrafı siteyi yavaşlatmaz.
 
-**Geri alma:** panelde "geri al" yok. Supabase → **Table Editor** →
-`site_icerik` → `veri` sütunundan eski JSON'a elle dönebilirsin. Büyük bir
-değişiklik öncesi o JSON'u kopyalayıp saklamak en kolay yedek.
+**Geri alma:** panelde **Hesap** sekmesinde son beş yayının kaydı durur.
+"Bu hâle dön" denince yazılar o hâle döner; sitede görünmesi için yine
+Yayınla demek gerekir. Beşten eskisine dönmek gerekirse Supabase →
+**Table Editor** → `site_icerik` → `gecmis` sütunundan bakılabilir.
+
+**Yarım kalan iş:** yayınlanmamış değişiklikler tarayıcıda saklanır.
+Hasan Bey sekmeyi kazara kapatırsa, tekrar girdiğinde "Devam et" diye sorar.
+
+**Şifre:** Hasan Bey kendi şifresini **Hesap** sekmesinden değiştirebilir.
 
 **Yayınlama gecikmesi:** yok. "Yayınla" der demez site günceldir; ziyaretçi
 sayfayı yenilediğinde yeni içeriği görür.

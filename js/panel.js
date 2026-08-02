@@ -16,6 +16,9 @@
   if (!A.url || !A.anahtar) { $("#ekranKurulum").classList.remove("gizli"); return; }
 
   var OTURUM = null, ICERIK = null, KIRLI = false, YUKLENEN_PROJE = null;
+  var GECMIS = [];          // son 5 yayının kaydı
+  var SON_YAYIN = null;     // sunucuda o an duran hâl (geçmişe bu yazılır)
+  var TASLAK = "kayraTaslak";
 
   /* ---------- sitenin bugünkü içeriği: ilk açılışta bunlar gelir ---------- */
   var VARSAYILAN = {
@@ -70,6 +73,28 @@
   function kirlet() {
     KIRLI = true; $("#btnYayinla").disabled = false;
     durum("Kaydedilmemiş değişiklikleriniz var.", "#A8443A");
+    taslakYaz();
+  }
+
+  /* Tarayıcı kapanırsa emek çöpe gitmesin: her değişiklik yerelde saklanır.
+     Yayınlanınca silinir. Sunucuya değil, yalnız bu cihaza yazılır. */
+  function taslakYaz() {
+    try {
+      localStorage.setItem(TASLAK, JSON.stringify({ tarih: Date.now(), veri: ICERIK }));
+    } catch (x) {}
+  }
+  function taslakSil() { try { localStorage.removeItem(TASLAK); } catch (x) {} }
+  function taslakOku() {
+    try { return JSON.parse(localStorage.getItem(TASLAK) || "null"); } catch (x) { return null; }
+  }
+
+  function zamanYaz(ms) {
+    var d = new Date(ms), bugun = new Date();
+    var saat = ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+    if (d.toDateString() === bugun.toDateString()) return "bugün " + saat;
+    var ay = ["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz",
+              "Ağustos","Eylül","Ekim","Kasım","Aralık"][d.getMonth()];
+    return d.getDate() + " " + ay + " " + saat;
   }
   addEventListener("beforeunload", function (e) {
     if (KIRLI) { e.preventDefault(); e.returnValue = ""; }
@@ -113,15 +138,68 @@
     $("#ekranGiris").classList.add("gizli");
     $("#ekranPanel").classList.remove("gizli");
     $("#kimBilgi").textContent = OTURUM.eposta;
-    fetch(A.url + "/rest/v1/site_icerik?id=eq.1&select=veri", {
+    fetch(A.url + "/rest/v1/site_icerik?id=eq.1&select=veri,gecmis", {
       headers: { apikey: A.anahtar, Authorization: "Bearer " + OTURUM.token }
     }).then(function (r) { return r.ok ? r.json() : []; }).then(function (j) {
-      ICERIK = (j && j[0] && j[0].veri) ? j[0].veri : JSON.parse(JSON.stringify(VARSAYILAN));
+      var s = j && j[0];
+      var dolu = s && s.veri && Object.keys(s.veri).length;
+      ICERIK = dolu ? s.veri : JSON.parse(JSON.stringify(VARSAYILAN));
+      GECMIS = (s && Array.isArray(s.gecmis)) ? s.gecmis : [];
       if (!Array.isArray(ICERIK.projeler)) ICERIK.projeler = VARSAYILAN.projeler.slice();
+      SON_YAYIN = JSON.stringify(ICERIK);
       doldur();
+      taslakSor();
     }).catch(function () {
       ICERIK = JSON.parse(JSON.stringify(VARSAYILAN)); doldur();
       durum("İçerik sunucudan alınamadı; sitenin mevcut hâli gösteriliyor.", "#A8443A");
+    });
+  }
+
+  /* Yarım kalmış düzenleme varsa sor — sessizce geri yüklemek,
+     kullanıcının bilmediği bir değişikliği yayınlamasına yol açardı. */
+  function taslakSor() {
+    var t = taslakOku();
+    if (!t || !t.veri) return;
+    if (JSON.stringify(t.veri) === SON_YAYIN) { taslakSil(); return; }
+    $("#taslakZaman").textContent = zamanYaz(t.tarih) + " tarihinde bırakıldı";
+    $("#taslakBar").classList.remove("gizli");
+    $("#btnTaslakDevam").onclick = function () {
+      ICERIK = t.veri;
+      if (!Array.isArray(ICERIK.projeler)) ICERIK.projeler = [];
+      $("#taslakBar").classList.add("gizli");
+      doldur(); kirlet();
+      durum("Kaldığınız yerden devam ediyorsunuz. <b>Yayınla</b> demeyi unutmayın.", "#A8443A");
+    };
+    $("#btnTaslakAt").onclick = function () {
+      taslakSil(); $("#taslakBar").classList.add("gizli");
+    };
+  }
+
+  /* ---------------- sürüm geçmişi ---------------- */
+  function gecmisCiz() {
+    var k = $("#gecmisListe");
+    if (!GECMIS.length) {
+      k.innerHTML = '<div class="bos">Henüz kayıt yok. İlk yayınınızdan sonra burada görünecek.</div>';
+      return;
+    }
+    k.innerHTML = GECMIS.map(function (g, i) {
+      var n = (g.veri && Array.isArray(g.veri.projeler)) ? g.veri.projeler.length : 0;
+      return '<div class="gecmis"><div class="t">' + zamanYaz(g.tarih) +
+        "<small>" + n + " proje</small></div>" +
+        '<button type="button" data-g="' + i + '">Bu hâle dön</button></div>';
+    }).join("");
+    k.querySelectorAll("[data-g]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var g = GECMIS[+b.dataset.g];
+        if (!g || !g.veri) return;
+        if (!confirm(zamanYaz(g.tarih) + " tarihindeki hâle dönülsün mü?\n\n" +
+          "Yazılar o hâle döner. Sitede görünmesi için Yayınla demeniz gerekir.")) return;
+        ICERIK = JSON.parse(JSON.stringify(g.veri));
+        if (!Array.isArray(ICERIK.projeler)) ICERIK.projeler = [];
+        doldur(); kirlet();
+        durum("Eski hâle dönüldü. Sitede görünmesi için <b>Yayınla</b> deyin.", "#A8443A");
+        scrollTo({ top: 0, behavior: "smooth" });
+      });
     });
   }
 
@@ -136,6 +214,7 @@
     });
     istatistikCiz();
     projeleriCiz();
+    gecmisCiz();
     $("#btnYayinla").disabled = true;
     durum("Hazır. Değişiklik yapıp <b>Yayınla</b> deyin.");
   }
@@ -176,6 +255,12 @@
           '<img src="' + kacis(p.foto || "") + '" alt="">' +
           '<div><div class="ad">' + kacis(p.ad || "Adsız proje") + '</div>' +
           '<div class="yer">' + kacis(p.konum || "") + '</div></div>' +
+          '<div class="sira">' +
+            '<button type="button" class="yukari" title="Yukarı taşı"' +
+              (i === 0 ? " disabled" : "") + ">↑</button>" +
+            '<button type="button" class="asagi" title="Aşağı taşı"' +
+              (i === ICERIK.projeler.length - 1 ? " disabled" : "") + ">↓</button>" +
+          "</div>" +
           '<button class="ac-kapa" type="button">Düzenle</button>' +
         '</div>' +
         '<div class="proje-govde">' +
@@ -224,11 +309,23 @@
       d.querySelector(".foto-sec").addEventListener("click", function () {
         YUKLENEN_PROJE = i; $("#fotoSecici").click();
       });
+      d.querySelector(".yukari").addEventListener("click", function () { tasi(i, -1); });
+      d.querySelector(".asagi").addEventListener("click", function () { tasi(i, 1); });
       d.querySelector(".sil").addEventListener("click", function () {
         if (!confirm("“" + (ICERIK.projeler[i].ad || "Bu proje") + "” silinsin mi?\n\nYayınlayana kadar sitede kalmaya devam eder.")) return;
         ICERIK.projeler.splice(i, 1); projeleriCiz(); kirlet();
       });
     });
+  }
+
+  /* Sitedeki kart sırası bu listeyle aynı. */
+  function tasi(i, yon) {
+    var j = i + yon, p = ICERIK.projeler;
+    if (j < 0 || j >= p.length) return;
+    var t = p[i]; p[i] = p[j]; p[j] = t;
+    projeleriCiz(); kirlet();
+    var k = $('#projeListe .proje[data-i="' + j + '"]');
+    if (k) k.scrollIntoView({ block: "center" });
   }
 
   $("#btnYeniProje").addEventListener("click", function () {
@@ -294,21 +391,56 @@
   $("#btnYayinla").addEventListener("click", function () {
     var b = this; b.disabled = true; b.textContent = "Yayınlanıyor…";
     ICERIK.guncelleme = new Date().toISOString();
+
+    /* Yayınlamadan ÖNCEKİ hâli geçmişe al — geri dönülecek nokta bu. */
+    var yeniGecmis = GECMIS.slice();
+    if (SON_YAYIN) {
+      try { yeniGecmis.unshift({ tarih: Date.now(), veri: JSON.parse(SON_YAYIN) }); } catch (x) {}
+    }
+    yeniGecmis = yeniGecmis.slice(0, 5);
+
     fetch(A.url + "/rest/v1/site_icerik?id=eq.1", {
       method: "PATCH",
       headers: {
         apikey: A.anahtar, Authorization: "Bearer " + OTURUM.token,
         "Content-Type": "application/json", Prefer: "return=minimal"
       },
-      body: JSON.stringify({ veri: ICERIK })
+      body: JSON.stringify({ veri: ICERIK, gecmis: yeniGecmis })
     }).then(function (r) {
       b.textContent = "Yayınla";
       if (!r.ok) throw 0;
       KIRLI = false; b.disabled = true;
+      GECMIS = yeniGecmis; SON_YAYIN = JSON.stringify(ICERIK);
+      taslakSil(); gecmisCiz();
       durum('Yayınlandı. <a href="index.html" target="_blank" style="color:#2B4D41"><b>Siteyi aç →</b></a>', "#2B4D41");
     }).catch(function () {
       b.disabled = false; b.textContent = "Yayınla";
       durum("Yayınlanamadı. İnternetinizi kontrol edip tekrar deneyin.", "#A8443A");
+    });
+  });
+
+  /* ---------------- şifre değiştirme ---------------- */
+  $("#btnSifre").addEventListener("click", function () {
+    var s1 = $("#yeniSifre").value, s2 = $("#yeniSifre2").value, d = $("#sifreDurum");
+    function soyle(m, renk) { d.textContent = m; d.style.color = renk; }
+    if (s1.length < 6) return soyle("Şifre en az 6 karakter olmalı.", "#A8443A");
+    if (s1 !== s2) return soyle("İki şifre birbirini tutmuyor.", "#A8443A");
+    var b = this; b.disabled = true; b.textContent = "Değiştiriliyor…";
+    fetch(A.url + "/auth/v1/user", {
+      method: "PUT",
+      headers: {
+        apikey: A.anahtar, Authorization: "Bearer " + OTURUM.token,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ password: s1 })
+    }).then(function (r) {
+      b.disabled = false; b.textContent = "Şifreyi değiştir";
+      if (!r.ok) throw 0;
+      $("#yeniSifre").value = ""; $("#yeniSifre2").value = "";
+      soyle("Şifreniz değiştirildi. Bir dahaki girişte yenisini kullanın.", "#2B4D41");
+    }).catch(function () {
+      b.disabled = false; b.textContent = "Şifreyi değiştir";
+      soyle("Değiştirilemedi. İnternetinizi kontrol edip tekrar deneyin.", "#A8443A");
     });
   });
 
