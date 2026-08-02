@@ -7,6 +7,10 @@
    çalışmaya devam eder, panel de "kurulum gerekli" ekranı gösterir.
    ============================================================ */
 window.PANEL_AYAR = {
-  url: "",   // örn: https://abcdefgh.supabase.co
-  anahtar: "" // "anon public" anahtarı — gizli servis anahtarı DEĞİL
+  url: "https://sfsejfciqbxxnjbodsnx.supabase.co",
+  // Supabase'in yeni "publishable" anahtarı (eski adıyla anon public).
+  // Tarayıcıda durması normaldir; yazma yetkisini bu anahtar değil,
+  // veritabanındaki RLS kuralları verir. Doğrulandı: bu anahtarla
+  // anonim yazma denemesi sıfır satır etkiliyor.
+  anahtar: "sb_publishable_HvMsVXIoTrhjAyBxTDwSvw_zCMIWGqs"
 };
