@@ -1,0 +1,228 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Kayra — Site Yönetimi</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--paper:#F4F1EA;--ink:#1F2B26;--soft:#4E5A55;--muted:#7C8781;
+ --green:#2B4D41;--amber:#C9995B;--line:#DDD8CC;--kart:#FFFDF9;--kirmizi:#A8443A}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--paper);
+ color:var(--ink);line-height:1.55;font-size:16px;padding-bottom:110px}
+.kap{max-width:760px;margin:0 auto;padding:0 18px}
+
+/* ---- üst bar ---- */
+header{background:var(--green);color:#F4F1EA;padding:16px 0;position:sticky;top:0;z-index:30}
+header .kap{display:flex;align-items:center;justify-content:space-between;gap:12px}
+header b{font-size:17px;font-weight:700;letter-spacing:-.01em}
+header small{display:block;font-size:12px;opacity:.72;font-weight:400}
+.cikis{background:rgba(255,255,255,.14);color:#F4F1EA;border:0;border-radius:8px;
+ padding:10px 14px;font:inherit;font-size:14px;cursor:pointer;min-height:44px}
+
+/* ---- sekmeler ---- */
+nav.sek{display:flex;gap:6px;background:var(--paper);position:sticky;top:69px;z-index:20;
+ padding:12px 0 10px;border-bottom:1px solid var(--line)}
+nav.sek button{flex:1;background:none;border:1px solid var(--line);border-radius:9px;
+ padding:12px 6px;font:inherit;font-size:14px;font-weight:600;color:var(--soft);
+ cursor:pointer;min-height:48px}
+nav.sek button.on{background:var(--green);border-color:var(--green);color:#F4F1EA}
+
+section.sayfa{display:none;padding:22px 0 10px}
+section.sayfa.on{display:block}
+h2{font-size:20px;font-weight:700;letter-spacing:-.02em;margin:4px 0 4px}
+.yardim{font-size:14px;color:var(--muted);margin-bottom:20px}
+
+/* ---- alanlar ---- */
+.alan{margin-bottom:20px}
+.alan label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+.alan .ipucu{font-size:13px;color:var(--muted);margin-bottom:8px}
+input[type=text],input[type=email],input[type=password],textarea{
+ width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--kart);
+ border:1px solid var(--line);border-radius:10px;padding:13px 14px;min-height:50px}
+textarea{min-height:110px;resize:vertical;line-height:1.5}
+input:focus,textarea:focus{outline:2px solid var(--green);outline-offset:1px;border-color:var(--green)}
+.ikili{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.ikili{grid-template-columns:1fr}}
+
+/* isteğe bağlı İngilizce kutusu */
+.en-ac{background:none;border:0;color:var(--green);font:inherit;font-size:13px;
+ font-weight:600;cursor:pointer;padding:8px 0;text-decoration:underline;min-height:40px}
+.en-kutu{display:none;margin-top:8px}
+.en-kutu.acik{display:block}
+
+/* ---- proje kartları ---- */
+.proje{background:var(--kart);border:1px solid var(--line);border-radius:14px;
+ padding:16px;margin-bottom:16px}
+.proje-ust{display:flex;gap:14px;align-items:center}
+.proje-ust img{width:76px;height:76px;object-fit:cover;border-radius:10px;
+ background:#E8E4DA;flex:0 0 auto}
+.proje-ust .ad{font-weight:700;font-size:16px}
+.proje-ust .yer{font-size:13px;color:var(--muted)}
+.proje-govde{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.proje.acik .proje-govde{display:block}
+.ac-kapa{margin-left:auto;background:none;border:1px solid var(--line);border-radius:8px;
+ padding:10px 12px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;min-height:44px}
+.foto-sec{display:inline-flex;align-items:center;gap:8px;background:var(--green);
+ color:#F4F1EA;border:0;border-radius:10px;padding:12px 16px;font:inherit;font-size:14px;
+ font-weight:600;cursor:pointer;min-height:48px}
+.sil{background:none;border:1px solid var(--kirmizi);color:var(--kirmizi);border-radius:10px;
+ padding:12px 16px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;min-height:48px}
+.ekle{width:100%;background:none;border:2px dashed var(--line);border-radius:14px;
+ padding:20px;font:inherit;font-size:15px;font-weight:600;color:var(--green);
+ cursor:pointer;min-height:60px}
+
+/* ---- alt yayın çubuğu ---- */
+.yayin{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--kart);
+ border-top:1px solid var(--line);padding:12px 0;box-shadow:0 -6px 24px rgba(31,43,38,.08)}
+.yayin .kap{display:flex;align-items:center;gap:12px}
+.yayin .durum{flex:1;font-size:13.5px;color:var(--muted);line-height:1.35}
+.btn-yayin{background:var(--green);color:#F4F1EA;border:0;border-radius:11px;
+ padding:15px 22px;font:inherit;font-size:16px;font-weight:700;cursor:pointer;min-height:54px}
+.btn-yayin:disabled{opacity:.45;cursor:default}
+
+/* ---- giriş / kurulum ekranı ---- */
+.orta{max-width:400px;margin:9vh auto;padding:0 18px}
+.orta h1{font-size:24px;font-weight:800;letter-spacing:-.03em;margin-bottom:6px}
+.orta p{font-size:14.5px;color:var(--soft);margin-bottom:22px}
+.orta .btn-yayin{width:100%;margin-top:6px}
+.hata{background:#FBEEEC;border:1px solid #E7C4BE;color:var(--kirmizi);
+ border-radius:10px;padding:12px 14px;font-size:14px;margin-bottom:16px}
+.bilgi{background:#EEF2EF;border:1px solid #CFDBD4;border-radius:10px;
+ padding:14px;font-size:14px;color:var(--soft);margin-bottom:18px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
+ background:#E8E4DA;padding:2px 5px;border-radius:4px}
+.gizli{display:none !important}
+</style></head><body>
+
+<!-- ============ KURULUM YAPILMAMIŞ ============ -->
+<div id="ekranKurulum" class="orta gizli">
+  <h1>Panel henüz bağlanmadı</h1>
+  <p>Bu paneli çalıştırmak için tek seferlik bir kurulum gerekiyor.</p>
+  <div class="bilgi">
+    <b>Yapılacak:</b> <code>js/panel-ayar.js</code> dosyasındaki iki değeri doldurun.
+    Adımlar <code>KURULUM-PANEL.md</code> dosyasında yazıyor — beş dakikalık iş.
+  </div>
+  <p style="font-size:13.5px">Kurulum yapılana kadar site sabit içeriğiyle sorunsuz çalışmaya devam eder.</p>
+</div>
+
+<!-- ============ GİRİŞ ============ -->
+<div id="ekranGiris" class="orta gizli">
+  <h1>Kayra — Site Yönetimi</h1>
+  <p>Sitenizin yazılarını ve fotoğraflarını buradan değiştirebilirsiniz.</p>
+  <div id="girisHata" class="hata gizli"></div>
+  <div class="alan">
+    <label for="gEposta">E-posta</label>
+    <input id="gEposta" type="email" autocomplete="username" inputmode="email">
+  </div>
+  <div class="alan">
+    <label for="gSifre">Şifre</label>
+    <input id="gSifre" type="password" autocomplete="current-password">
+  </div>
+  <button class="btn-yayin" id="btnGiris">Giriş Yap</button>
+</div>
+
+<!-- ============ PANEL ============ -->
+<div id="ekranPanel" class="gizli">
+<header><div class="kap">
+  <div><b>Kayra — Site Yönetimi</b><small id="kimBilgi"></small></div>
+  <button class="cikis" id="btnCikis">Çıkış</button>
+</div></header>
+
+<div class="kap">
+<nav class="sek">
+  <button data-sayfa="anasayfa" class="on">Ana Sayfa</button>
+  <button data-sayfa="projeler">Projeler</button>
+  <button data-sayfa="iletisim">İletişim</button>
+</nav>
+
+<!-- ---- ANA SAYFA ---- -->
+<section class="sayfa on" id="s-anasayfa">
+  <h2>Ana sayfa yazıları</h2>
+  <p class="yardim">Sitenin ilk ekranında görünen yazılar. Kısa tutun — ekranda büyük görünürler.</p>
+
+  <div class="alan">
+    <label for="slogan1">Slogan — birinci satır</label>
+    <input id="slogan1" type="text" data-i="anasayfa.slogan1">
+    <button class="en-ac" type="button">İngilizcesini yaz (isteğe bağlı)</button>
+    <div class="en-kutu"><input type="text" placeholder="İngilizcesi" data-i="anasayfa.slogan1_en"></div>
+  </div>
+  <div class="alan">
+    <label for="slogan2">Slogan — ikinci satır</label>
+    <input id="slogan2" type="text" data-i="anasayfa.slogan2">
+    <button class="en-ac" type="button">İngilizcesini yaz (isteğe bağlı)</button>
+    <div class="en-kutu"><input type="text" placeholder="İngilizcesi" data-i="anasayfa.slogan2_en"></div>
+  </div>
+  <div class="alan">
+    <label for="giris">Giriş paragrafı</label>
+    <div class="ipucu">Sloganın altındaki tanıtım yazısı. 2–3 cümle yeterli.</div>
+    <textarea id="giris" data-i="anasayfa.giris"></textarea>
+    <button class="en-ac" type="button">İngilizcesini yaz (isteğe bağlı)</button>
+    <div class="en-kutu"><textarea placeholder="İngilizcesi" data-i="anasayfa.giris_en"></textarea></div>
+  </div>
+
+  <h2 style="margin-top:30px">Rakamlar</h2>
+  <p class="yardim">İlk ekranın altındaki üç rakam.</p>
+  <div id="istatistikler"></div>
+</section>
+
+<!-- ---- PROJELER ---- -->
+<section class="sayfa" id="s-projeler">
+  <h2>Projeler</h2>
+  <p class="yardim">Sitedeki proje kartları. Sıra burada nasılsa sitede de öyle görünür.</p>
+  <div id="projeListe"></div>
+  <button class="ekle" id="btnYeniProje">+ Yeni proje ekle</button>
+</section>
+
+<!-- ---- İLETİŞİM ---- -->
+<section class="sayfa" id="s-iletisim">
+  <h2>İletişim bilgileri</h2>
+  <p class="yardim">Sitenin her yerindeki telefon, WhatsApp ve e-posta bağlantıları buradan güncellenir.</p>
+
+  <div class="alan">
+    <label for="tel">Telefon — göründüğü hâli</label>
+    <div class="ipucu">Ziyaretçinin ekranda okuduğu yazı. Örnek: 0533 829 80 30</div>
+    <input id="tel" type="text" data-i="iletisim.telefon">
+  </div>
+  <div class="alan">
+    <label for="telHam">Telefon — arama numarası</label>
+    <div class="ipucu">Tıklayınca aranacak numara. Başında ülke kodu olmalı. Örnek: +905338298030</div>
+    <input id="telHam" type="text" inputmode="tel" data-i="iletisim.telefonHam">
+  </div>
+  <div class="alan">
+    <label for="wa">WhatsApp numarası</label>
+    <div class="ipucu">Yalnız rakam, başında + ve boşluk olmadan. Örnek: 905338298030</div>
+    <input id="wa" type="text" inputmode="numeric" data-i="iletisim.whatsapp">
+  </div>
+  <div class="alan">
+    <label for="eposta">E-posta</label>
+    <input id="eposta" type="text" inputmode="email" data-i="iletisim.eposta">
+  </div>
+  <div class="alan">
+    <label for="adres">Adres</label>
+    <input id="adres" type="text" data-i="iletisim.adres">
+  </div>
+  <div class="ikili">
+    <div class="alan">
+      <label for="ig">Instagram bağlantısı</label>
+      <input id="ig" type="text" data-i="iletisim.instagram">
+    </div>
+    <div class="alan">
+      <label for="fb">Facebook bağlantısı</label>
+      <input id="fb" type="text" data-i="iletisim.facebook">
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="yayin"><div class="kap">
+  <div class="durum" id="durum">Değişiklik yapıp <b>Yayınla</b> deyin.</div>
+  <button class="btn-yayin" id="btnYayinla" disabled>Yayınla</button>
+</div></div>
+</div>
+
+<input type="file" id="fotoSecici" accept="image/*" class="gizli">
+
+<script src="js/panel-ayar.js?v=1"></script>
+<script src="js/panel.js?v=1"></script>
+</body></html>
