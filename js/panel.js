@@ -66,6 +66,22 @@
     var p = yol.split("."), s = p.pop();
     p.reduce(function (a, k) { return a[k] || (a[k] = {}); }, o)[s] = d;
   }
+  /* Sığ değil, iç içe birleştirme: diziler ve düz değerler olduğu gibi
+     geçer, nesneler alan alan üst üste biner. */
+  function birlestir(temel, gelen) {
+    if (!gelen || typeof gelen !== "object" || Array.isArray(gelen)) return temel;
+    Object.keys(gelen).forEach(function (k) {
+      var g = gelen[k];
+      if (g && typeof g === "object" && !Array.isArray(g) &&
+          temel[k] && typeof temel[k] === "object" && !Array.isArray(temel[k])) {
+        temel[k] = birlestir(temel[k], g);
+      } else if (g !== undefined && g !== null) {
+        temel[k] = g;
+      }
+    });
+    return temel;
+  }
+
   function durum(m, renk) {
     var el = $("#durum"); el.innerHTML = m;
     el.style.color = renk || "";
@@ -142,10 +158,14 @@
       headers: { apikey: A.anahtar, Authorization: "Bearer " + OTURUM.token }
     }).then(function (r) { return r.ok ? r.json() : []; }).then(function (j) {
       var s = j && j[0];
-      var dolu = s && s.veri && Object.keys(s.veri).length;
-      ICERIK = dolu ? s.veri : JSON.parse(JSON.stringify(VARSAYILAN));
+      /* Gelen içeriği varsayılanın ÜZERİNE bindiriyoruz. Elle düzenlenmiş ya
+         da yarım kalmış bir kayıt (ör. anasayfa bölümü hiç yoksa) paneli
+         çökertmesin; eksik alanlar sitenin bugünkü hâliyle dolar. */
+      ICERIK = birlestir(JSON.parse(JSON.stringify(VARSAYILAN)), s && s.veri);
       GECMIS = (s && Array.isArray(s.gecmis)) ? s.gecmis : [];
-      if (!Array.isArray(ICERIK.projeler)) ICERIK.projeler = VARSAYILAN.projeler.slice();
+      if (!Array.isArray(ICERIK.projeler) || !ICERIK.projeler.length) {
+        ICERIK.projeler = JSON.parse(JSON.stringify(VARSAYILAN.projeler));
+      }
       SON_YAYIN = JSON.stringify(ICERIK);
       doldur();
       taslakSor();
