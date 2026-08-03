@@ -933,3 +933,9 @@ header:not(.solid) .nav-cta{background:var(--ink);color:var(--cream)}
   .foot-col a{overflow-wrap:anywhere;font-size:13px;line-height:1.4;
     display:flex;align-items:center;min-height:44px}
 }
+
+/* Ekranda görünmez, ekran okuyucu ve arama motoru okur. Gizlenen metin
+   sayfanın gerçekte anlattığı işi tarif eder — görünen içerikten farklı
+   bir şey vaat etmez. */
+.gizli-metin{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
