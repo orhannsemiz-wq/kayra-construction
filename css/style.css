@@ -908,3 +908,28 @@ header:not(.solid) .nav-cta{background:var(--ink);color:var(--cream)}
   .ilan-govde .btn{align-self:stretch;text-align:center}
   .ilan-not{font-size:12px}
 }
+
+/* ============================================================
+   MOBİL DÜZELTMELER — 2 (2026-08-03)
+   1) .pillar panelleri: yatay iç boşlukları yoktu, yazı panelin
+      kenarına yapışıyordu. Ayrıca 480px sabit yükseklik içeriği
+      (327px) aşağı itip üstte 119px ölü boşluk bırakıyordu.
+   2) Alt bilgi sütunları tam genişlikte alt alta diziliyordu;
+      iki sütuna alındı, yan yana ve hizalı duruyorlar.
+   ============================================================ */
+@media (max-width:900px){
+  .pillar{min-height:0 !important;padding:30px 24px !important}
+  .pillar .content{width:100%}
+  .pillar .pnum{font-size:76px;top:16px;right:16px}
+
+  /* Açıklama tam genişlikte kalır, üç grup altında yan yana dizilir. */
+  /* Üç sütun 390px'te 99px'e düşüyor, e-posta üç satıra bölünüyordu.
+     İki sütun: hem yan yana hem okunur, parmak hedefi de 44px kalıyor. */
+  .foot-grid{display:grid !important;grid-template-columns:1fr 1fr !important;
+    gap:24px 18px !important;align-items:start}
+  .foot-grid>:first-child{grid-column:1/-1}
+  .foot-col{min-width:0}
+  .foot-col h4{margin-bottom:6px}
+  .foot-col a{overflow-wrap:anywhere;font-size:13px;line-height:1.4;
+    display:flex;align-items:center;min-height:44px}
+}
