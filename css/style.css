@@ -885,11 +885,21 @@ header:not(.solid) .nav-cta{background:var(--ink);color:var(--cream)}
 .ilan-gorseller .ph img{width:100%;height:100%;object-fit:cover;display:block}
 .ilan-kucuk{display:grid;grid-template-columns:1fr 1fr;gap:4px}
 .ilan-kucuk img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
-.ilan-govde{padding:28px 30px 30px;display:flex;flex-direction:column}
+/* Gorsel sutunu metinden uzun; kunye dibe yapisip altta kocaman bosluk
+   birakmasin diye govde dikeyde ortalanir. */
+.ilan-govde{padding:28px 30px 30px;display:flex;flex-direction:column;justify-content:center}
 .ilan-govde h3{font-size:clamp(21px,2.4vw,27px);margin:6px 0 2px}
 .ilan-govde .loc{font-size:12.5px;color:var(--muted);margin-bottom:14px}
 .ilan-govde>p{font-size:14.5px;color:var(--ink-soft);line-height:1.6}
-.ilan-govde .facts{margin:20px 0 0}
+/* .card .facts kurallari .card'a kilitli; ilan karti .card degil, o yuzden
+   etiket ile deger yan yana yapisiyordu. Kunye burada satir satir okunur:
+   etiket solda kucuk, deger sagda; aralarinda ince ayrac. */
+.ilan-govde .facts{display:block;margin:22px 0 0;border-top:1px solid var(--iline)}
+.ilan-govde .facts div{display:flex;align-items:baseline;justify-content:space-between;
+  gap:20px;padding:12px 0;border-bottom:1px solid var(--iline)}
+.ilan-govde .facts div span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);flex:0 0 auto}
+.ilan-govde .facts div b{font-size:16px;font-weight:600;text-align:right}
 .ilan-not{font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.5}
 .ilan-govde .btn{align-self:flex-start;margin-top:22px}
 @media (max-width:900px){
